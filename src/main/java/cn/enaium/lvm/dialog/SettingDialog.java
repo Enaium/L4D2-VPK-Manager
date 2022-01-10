@@ -1,0 +1,127 @@
+package cn.enaium.lvm.dialog;
+
+import cn.enaium.lvm.config.Config;
+import cn.enaium.lvm.setting.EnableSetting;
+import cn.enaium.lvm.setting.ModeSetting;
+import cn.enaium.lvm.setting.Setting;
+import cn.enaium.lvm.setting.StringSetting;
+import cn.enaium.lvm.util.ConfigUtil;
+import cn.enaium.lvm.util.MessageUtil;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.lang.reflect.Field;
+
+import static cn.enaium.lvm.LVM.CONFIG;
+
+/**
+ * @author Enaium
+ */
+@SuppressWarnings("ALL")
+public class SettingDialog extends Dialog {
+    public SettingDialog() {
+        super("Setting");
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setLayout(new BorderLayout());
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new GridLayout(0, 1));
+        Config config = CONFIG;
+
+        for (Field field : config.getClass().getFields()) {
+            try {
+                Setting o = ((Setting) field.get(config));
+                if (o instanceof EnableSetting) {
+                    JCheckBox jCheckBox = new JCheckBox(o.getName());
+
+                    jCheckBox.setSelected(((EnableSetting) o).getValue());
+
+                    jCheckBox.addActionListener(e -> {
+                        o.setValue(jCheckBox.isSelected());
+                    });
+
+                    jPanel.add(jCheckBox);
+                } else if (o instanceof ModeSetting) {
+                    JPanel modePanel = new JPanel(new GridLayout(1, 2));
+                    JComboBox<String> jComboBox = new JComboBox<>();
+                    ((ModeSetting) o).getMode().forEach(jComboBox::addItem);
+                    jComboBox.setSelectedItem(((ModeSetting) o).getValue());
+                    jComboBox.addActionListener(e -> {
+                        o.setValue(jComboBox.getSelectedItem());
+                    });
+                    modePanel.add(new JLabel(o.getName()));
+                    modePanel.add(jComboBox);
+                    jPanel.add(modePanel);
+                } else if (o instanceof StringSetting) {
+                    JPanel stringPanel = new JPanel(new GridLayout(1, 2));
+                    stringPanel.add(new JLabel(o.getName()));
+                    JTextField jTextField = new JTextField(((StringSetting) o).getValue());
+                    jTextField.getDocument().addDocumentListener(new DocumentListener() {
+                        @Override
+                        public void insertUpdate(DocumentEvent e) {
+                            o.setValue(jTextField.getText());
+                        }
+
+                        @Override
+                        public void removeUpdate(DocumentEvent e) {
+                            o.setValue(jTextField.getText());
+                        }
+
+                        @Override
+                        public void changedUpdate(DocumentEvent e) {
+                            o.setValue(jTextField.getText());
+                        }
+                    });
+
+                    stringPanel.add(jTextField);
+                    jPanel.add(stringPanel);
+                }
+            } catch (IllegalAccessException e) {
+                MessageUtil.error(e);
+            }
+        }
+
+        JScrollPane jScrollBar = new JScrollPane(jPanel);
+        add(jScrollBar, BorderLayout.CENTER);
+        addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ConfigUtil.save(CONFIG);
+                dispose();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+    }
+}

@@ -1,0 +1,51 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'java'
+    id 'edu.sc.seis.launch4j' version '2.5.1'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group 'cn.enaium'
+version '1.0.0'
+
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+jar {
+    manifest.attributes(
+            'Manifest-Version': 1.0,
+            'Main-Class': 'cn.enaium.lvm.LVM',
+            "Implementation-Title": "${project.name}",
+            "Implementation-Version": "${project.version}",
+            "Implementation-Vendor": "${project.group}",
+            "Implementation-Timestamp": new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+    )
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files("javavpk.jar")
+    implementation 'com.formdev:flatlaf:1.6.5'
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+}
+
+launch4j {
+    mainClassName = 'cn.enaium.lvm.LVM'
+    icon = "${projectDir}/src/main/resources/icon.ico"
+    jar = "${projectDir}/build/libs/${project.name}-${project.version}.jar"
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('com.formdev:flatlaf'))
+        include(dependency('com.google.code.gson:gson'))
+    }
+    archiveClassifier.set('')
+}
+
+build.dependsOn shadowJar

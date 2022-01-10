@@ -1,0 +1,11 @@
+{
+  "warning": "Warning",
+  "wantCloseWindow": "Do you want to close",
+  "table.fileName": "File name",
+  "table.title": "Title",
+  "table.tagline": "Tagline",
+  "table.author": "Author",
+  "button.workshopCopyToAddons": "Workshop vpk copy to addons dir",
+  "button.refresh": "Refresh",
+  "button.viewWorkshopFolder": "View workshop folder"
+}
