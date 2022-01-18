@@ -16,4 +16,17 @@ public class MessageUtil {
         JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         System.exit(0);
     }
+
+    public static void confirm(String message, String title, Action yes, Action no) {
+        int i = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.OK_CANCEL_OPTION);
+        if (i == JOptionPane.YES_OPTION) {
+            yes.action();
+        } else {
+            no.action();
+        }
+    }
+
+    public interface Action {
+        void action();
+    }
 }

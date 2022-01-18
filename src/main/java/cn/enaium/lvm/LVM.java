@@ -8,9 +8,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 /**
  * @author Enaium
@@ -18,6 +15,7 @@ import java.nio.file.Files;
 public class LVM {
     public static String WORKSHOP_DIR;
     public static String ADDONS_DIR;
+    public static String DISABLE_ADDONS_DIR;
     public static Config CONFIG;
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
@@ -49,7 +47,11 @@ public class LVM {
 
         if (dir != null) {
             ADDONS_DIR = dir + "/left4dead2/addons";
+            DISABLE_ADDONS_DIR = dir + "/left4dead2/disable-addons";
             WORKSHOP_DIR = dir + "/left4dead2/addons/workshop";
+            if (!new File(DISABLE_ADDONS_DIR).exists()) {
+                new File(DISABLE_ADDONS_DIR).mkdirs();
+            }
         } else {
             MessageUtil.error(new Exception("DIR NOT FOUND!"));
             System.exit(0);

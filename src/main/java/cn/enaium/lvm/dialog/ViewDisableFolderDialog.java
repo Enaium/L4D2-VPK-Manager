@@ -1,7 +1,5 @@
-package cn.enaium.lvm.panel;
+package cn.enaium.lvm.dialog;
 
-import cn.enaium.lvm.dialog.ViewDisableFolderDialog;
-import cn.enaium.lvm.dialog.ViewWorkshopFolderDialog;
 import cn.enaium.lvm.file.FileTable;
 import cn.enaium.lvm.file.FileTableNode;
 import cn.enaium.lvm.util.LangUtil;
@@ -23,31 +21,20 @@ import static cn.enaium.lvm.LVM.DISABLE_ADDONS_DIR;
 /**
  * @author Enaium
  */
-public class MainPanel extends JPanel {
-    public MainPanel() {
-        setLayout(new BorderLayout());
-        FileTable fileTable = new FileTable(ADDONS_DIR);
-        JPanel jPanel = new JPanel();
-        jPanel.setLayout(new GridLayout(1, 3));
-        JButton refresh = new JButton(LangUtil.i18n("button.refresh"));
-        refresh.addActionListener(e -> fileTable.refresh());
-        jPanel.add(refresh);
-        JButton delete = new JButton(LangUtil.i18n("button.viewDisabledFolder"));
-        delete.addActionListener(e -> new ViewDisableFolderDialog().setVisible(true));
-        jPanel.add(delete);
-        JButton viewWorkshopFolder = new JButton(LangUtil.i18n("button.viewWorkshopFolder"));
-        viewWorkshopFolder.addActionListener(e -> new ViewWorkshopFolderDialog().setVisible(true));
-        jPanel.add(viewWorkshopFolder);
-        add(jPanel, BorderLayout.NORTH);
+public class ViewDisableFolderDialog extends Dialog {
+    public ViewDisableFolderDialog() {
+        super(LangUtil.i18n("button.viewDisabledFolder"));
+        FileTable fileTable = new FileTable(DISABLE_ADDONS_DIR);
+        DefaultTableModel model = (DefaultTableModel) fileTable.getModel();
         JPopupMenu jPopupMenu = new JPopupMenu();
-        JMenuItem jMenuItem = new JMenuItem(LangUtil.i18n("menu.disable"));
+        JMenuItem jMenuItem = new JMenuItem(LangUtil.i18n("menu.enable"));
         jMenuItem.addActionListener(e -> {
             for (int selectedRow : fileTable.getSelectedRows()) {
                 Object valueAt = fileTable.getValueAt(selectedRow, 0);
                 if (valueAt instanceof FileTableNode) {
-                    File file = ((FileTableNode) valueAt).getFile();
+                    File disableFile = ((FileTableNode) valueAt).getFile();
                     try {
-                        Files.move(file.toPath(), new File(DISABLE_ADDONS_DIR, file.getName()).toPath());
+                        Files.move(disableFile.toPath(), new File(ADDONS_DIR, disableFile.getName()).toPath());
                     } catch (IOException ex) {
                         MessageUtil.error(ex);
                     }
@@ -85,6 +72,4 @@ public class MainPanel extends JPanel {
         });
         add(new JScrollPane(fileTable), BorderLayout.CENTER);
     }
-
-
 }

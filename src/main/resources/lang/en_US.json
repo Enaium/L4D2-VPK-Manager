@@ -7,5 +7,11 @@
   "table.author": "Author",
   "button.workshopCopyToAddons": "Workshop vpk copy to addons dir",
   "button.refresh": "Refresh",
-  "button.viewWorkshopFolder": "View workshop folder"
+  "button.viewDisabledFolder": "View disabled folder",
+  "button.viewWorkshopFolder": "View workshop folder",
+  "menu.disable": "Disable",
+  "menu.enable": "Enable",
+  "menu.help": "Help",
+  "menu.help.about": "About",
+  "menu.help.setting": "Setting"
 }

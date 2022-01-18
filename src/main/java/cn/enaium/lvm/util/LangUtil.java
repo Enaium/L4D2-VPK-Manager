@@ -52,7 +52,12 @@ public class LangUtil {
             }
             String text = stringBuilder.toString();
             inputStream.close();
-            return new Gson().fromJson(text, JsonObject.class).get(key).getAsString();
+            JsonObject jsonObject = new Gson().fromJson(text, JsonObject.class);
+            try {
+                return jsonObject.get(key).getAsString();
+            } catch (NullPointerException e) {
+                MessageUtil.error(new NullPointerException("Lang not found " + key));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -22,10 +22,7 @@ import static cn.enaium.lvm.LVM.WORKSHOP_DIR;
 public class ViewWorkshopFolderDialog extends Dialog {
     public ViewWorkshopFolderDialog() {
         super(LangUtil.i18n("button.viewWorkshopFolder"));
-        FileTable fileTable = new FileTable(FileTable.getTableModel());
-        DefaultTableModel model = (DefaultTableModel) fileTable.getModel();
-        File file = new File(WORKSHOP_DIR);
-        Util.getAll(file).forEach(it -> model.addRow(new Object[]{it.getFile().getName(), it.getTitle(), it.getTagline(), it.getAuthor()}));
+        FileTable fileTable = new FileTable(WORKSHOP_DIR);
         JButton workshopVpkToAddonDir = new JButton(LangUtil.i18n("button.workshopCopyToAddons"));
         workshopVpkToAddonDir.addActionListener(action -> {
             for (FileTableNode fileTableNode : Util.getAll(new File(WORKSHOP_DIR))) {

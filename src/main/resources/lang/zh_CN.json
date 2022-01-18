@@ -7,5 +7,11 @@
   "table.author": "作者",
   "button.workshopCopyToAddons": "创意工坊目录的vpk复制到addons目录",
   "button.refresh": "刷新",
-  "button.viewWorkshopFolder": "查看创意工坊文件夹"
+  "button.viewDisabledFolder": "查看禁用的文件夹",
+  "button.viewWorkshopFolder": "查看创意工坊文件夹",
+  "menu.disable": "禁用",
+  "menu.enable": "启用",
+  "menu.help": "帮助",
+  "menu.help.about": "关于",
+  "menu.help.setting": "设置"
 }

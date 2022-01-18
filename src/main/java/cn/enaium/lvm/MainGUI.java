@@ -1,19 +1,14 @@
 package cn.enaium.lvm;
 
-import cn.enaium.lvm.panel.MainMenu;
+import cn.enaium.lvm.menu.MainMenu;
 import cn.enaium.lvm.panel.MainPanel;
 import cn.enaium.lvm.util.LangUtil;
 import cn.enaium.lvm.util.MessageUtil;
-import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 /**
  * @author Enaium
@@ -39,11 +34,10 @@ public class MainGUI extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                int i = JOptionPane.showConfirmDialog(null, LangUtil.i18n("wantCloseWindow"), LangUtil.i18n("warning"), JOptionPane.OK_CANCEL_OPTION);
-                if (i == JOptionPane.YES_OPTION) {
+                MessageUtil.confirm(LangUtil.i18n("wantCloseWindow"), LangUtil.i18n("warning"), () -> {
                     dispose();
                     System.exit(0);
-                }
+                    }, () -> {});
             }
 
             @Override
