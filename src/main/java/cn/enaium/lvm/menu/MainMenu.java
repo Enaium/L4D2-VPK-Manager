@@ -1,6 +1,7 @@
 package cn.enaium.lvm.menu;
 
 import cn.enaium.lvm.dialog.SettingDialog;
+import cn.enaium.lvm.dialog.VPKExtract;
 import cn.enaium.lvm.util.LangUtil;
 
 import javax.swing.*;
@@ -14,7 +15,15 @@ import java.net.URISyntaxException;
  */
 public class MainMenu extends JMenuBar {
     public MainMenu() {
-        JMenu jMenu = new JMenu(LangUtil.i18n("menu.help"));
+        JMenu tool = new JMenu(LangUtil.i18n("menu.tool"));
+        JMenuItem vpkExtract = new JMenuItem(LangUtil.i18n("menu.tool.vpkExtract"));
+        vpkExtract.addActionListener(e -> {
+            new VPKExtract().setVisible(true);
+        });
+        tool.add(vpkExtract);
+        add(tool);
+
+        JMenu help = new JMenu(LangUtil.i18n("menu.help"));
         JMenuItem about = new JMenuItem(LangUtil.i18n("menu.help.about"));
         about.addActionListener(e -> {
             try {
@@ -23,12 +32,12 @@ public class MainMenu extends JMenuBar {
                 ex.printStackTrace();
             }
         });
-        jMenu.add(about);
+        help.add(about);
         JMenuItem setting = new JMenuItem(LangUtil.i18n("menu.help.setting"));
         setting.addActionListener(e -> {
             new SettingDialog().setVisible(true);
         });
-        jMenu.add(setting);
-        add(jMenu);
+        help.add(setting);
+        add(help);
     }
 }
