@@ -34,6 +34,7 @@ public class ViewWorkshopFolderDialog extends Dialog {
                     }
                 }
             }
+            JOptionPane.showMessageDialog(null, LangUtil.i18n("success"));
         });
         add(workshopVpkToAddonDir, BorderLayout.NORTH);
         add(new JScrollPane(fileTable), BorderLayout.CENTER);

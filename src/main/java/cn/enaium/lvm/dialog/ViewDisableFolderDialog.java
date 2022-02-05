@@ -25,7 +25,6 @@ public class ViewDisableFolderDialog extends Dialog {
     public ViewDisableFolderDialog() {
         super(LangUtil.i18n("button.viewDisabledFolder"));
         FileTable fileTable = new FileTable(DISABLE_ADDONS_DIR);
-        DefaultTableModel model = (DefaultTableModel) fileTable.getModel();
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem jMenuItem = new JMenuItem(LangUtil.i18n("menu.enable"));
         jMenuItem.addActionListener(e -> {

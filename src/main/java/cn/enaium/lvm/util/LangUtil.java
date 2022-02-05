@@ -56,7 +56,7 @@ public class LangUtil {
             try {
                 return jsonObject.get(key).getAsString();
             } catch (NullPointerException e) {
-                MessageUtil.error(new NullPointerException("Lang not found " + key));
+                MessageUtil.error(new NullPointerException(String.format("Lang not found \" %s \"", key)));
             }
         } catch (IOException e) {
             e.printStackTrace();

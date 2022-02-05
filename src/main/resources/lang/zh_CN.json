@@ -1,5 +1,7 @@
 {
+  "success": "成功",
   "warning": "警告",
+  "fail": "失败",
   "table.fileName": "文件名",
   "wantCloseWindow": "想要关闭吗",
   "table.title": "标题",
@@ -13,5 +15,8 @@
   "menu.enable": "启用",
   "menu.help": "帮助",
   "menu.help.about": "关于",
-  "menu.help.setting": "设置"
+  "menu.help.setting": "设置",
+  "menu.tool": "工具",
+  "menu.tool.vpkExtract": "VPK提取",
+  "menu.tool.vpkExtract.drop": "将文件拖放到此处提取"
 }

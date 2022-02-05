@@ -1,5 +1,7 @@
 {
+  "success": "Success",
   "warning": "Warning",
+  "fail": "Fail",
   "wantCloseWindow": "Do you want to close",
   "table.fileName": "File name",
   "table.title": "Title",
@@ -13,5 +15,8 @@
   "menu.enable": "Enable",
   "menu.help": "Help",
   "menu.help.about": "About",
-  "menu.help.setting": "Setting"
+  "menu.help.setting": "Setting",
+  "menu.tool": "Tool",
+  "menu.tool.vpkExtract": "VPK extract",
+  "menu.tool.vpkExtract.drop": "Drop files here to extract"
 }
