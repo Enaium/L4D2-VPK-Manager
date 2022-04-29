@@ -16,6 +16,8 @@
 
 package cn.enaium.lvm.panel;
 
+import cn.enaium.lvm.FileDropTarget;
+import cn.enaium.lvm.LVM;
 import cn.enaium.lvm.dialog.ViewDisableFolderDialog;
 import cn.enaium.lvm.dialog.ViewWorkshopFolderDialog;
 import cn.enaium.lvm.file.FileTable;
@@ -27,14 +29,16 @@ import cn.enaium.lvm.util.Util;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import static cn.enaium.lvm.LVM.ADDONS_DIR;
-import static cn.enaium.lvm.LVM.DISABLE_ADDONS_DIR;
+import static cn.enaium.lvm.LVM.*;
 
 /**
  * @author Enaium
@@ -42,19 +46,31 @@ import static cn.enaium.lvm.LVM.DISABLE_ADDONS_DIR;
 public class MainPanel extends JPanel {
     public MainPanel() {
         setLayout(new BorderLayout());
+
+        new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new FileDropTarget(".vpk", files -> {
+            for (File file : files) {
+                try {
+                    Files.move(file.toPath(), Paths.get(ADDONS_DIR, file.getName()));
+                } catch (IOException e) {
+                    MessageUtil.error(e);
+                }
+            }
+        }));
+
         FileTable fileTable = new FileTable(ADDONS_DIR);
-        JPanel jPanel = new JPanel();
-        jPanel.setLayout(new GridLayout(1, 3));
+
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(1, 3));
         JButton refresh = new JButton(LangUtil.i18n("button.refresh"));
         refresh.addActionListener(e -> fileTable.refresh());
-        jPanel.add(refresh);
+        topPanel.add(refresh);
         JButton delete = new JButton(LangUtil.i18n("button.viewDisabledFolder"));
         delete.addActionListener(e -> new ViewDisableFolderDialog().setVisible(true));
-        jPanel.add(delete);
+        topPanel.add(delete);
         JButton viewWorkshopFolder = new JButton(LangUtil.i18n("button.viewWorkshopFolder"));
         viewWorkshopFolder.addActionListener(e -> new ViewWorkshopFolderDialog().setVisible(true));
-        jPanel.add(viewWorkshopFolder);
-        add(jPanel, BorderLayout.NORTH);
+        topPanel.add(viewWorkshopFolder);
+        add(topPanel, BorderLayout.NORTH);
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem jMenuItem = new JMenuItem(LangUtil.i18n("menu.disable"));
         jMenuItem.addActionListener(e -> {
