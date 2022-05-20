@@ -17,17 +17,14 @@
 package cn.enaium.lvm.panel;
 
 import cn.enaium.lvm.FileDropTarget;
-import cn.enaium.lvm.LVM;
 import cn.enaium.lvm.dialog.ViewDisableFolderDialog;
 import cn.enaium.lvm.dialog.ViewWorkshopFolderDialog;
-import cn.enaium.lvm.file.FileTable;
-import cn.enaium.lvm.file.FileTableNode;
+import cn.enaium.lvm.file.FileList;
+import cn.enaium.lvm.file.FileInfo;
 import cn.enaium.lvm.util.LangUtil;
 import cn.enaium.lvm.util.MessageUtil;
-import cn.enaium.lvm.util.Util;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -38,7 +35,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static cn.enaium.lvm.LVM.*;
+import static cn.enaium.lvm.LVM.ADDONS_DIR;
+import static cn.enaium.lvm.LVM.DISABLE_ADDONS_DIR;
 
 /**
  * @author Enaium
@@ -47,22 +45,24 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         setLayout(new BorderLayout());
 
+        //Move to addons dir
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new FileDropTarget(".vpk", files -> {
             for (File file : files) {
                 try {
                     Files.move(file.toPath(), Paths.get(ADDONS_DIR, file.getName()));
+                    MessageUtil.info(LangUtil.i18n("success"));
                 } catch (IOException e) {
                     MessageUtil.error(e);
                 }
             }
         }));
 
-        FileTable fileTable = new FileTable(ADDONS_DIR);
+        FileList fileList = new FileList(ADDONS_DIR);
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 3));
         JButton refresh = new JButton(LangUtil.i18n("button.refresh"));
-        refresh.addActionListener(e -> fileTable.refresh());
+        refresh.addActionListener(e -> fileList.refresh());
         topPanel.add(refresh);
         JButton delete = new JButton(LangUtil.i18n("button.viewDisabledFolder"));
         delete.addActionListener(e -> new ViewDisableFolderDialog().setVisible(true));
@@ -74,10 +74,10 @@ public class MainPanel extends JPanel {
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem jMenuItem = new JMenuItem(LangUtil.i18n("menu.disable"));
         jMenuItem.addActionListener(e -> {
-            for (int selectedRow : fileTable.getSelectedRows()) {
-                Object valueAt = fileTable.getValueAt(selectedRow, 0);
-                if (valueAt instanceof FileTableNode) {
-                    File file = ((FileTableNode) valueAt).getFile();
+            for (int selectedRow : fileList.getTable().getSelectedRows()) {
+                Object valueAt = fileList.getTable().getValueAt(selectedRow, 0);
+                if (valueAt instanceof FileInfo) {
+                    File file = ((FileInfo) valueAt).getFile();
                     try {
                         Files.move(file.toPath(), new File(DISABLE_ADDONS_DIR, file.getName()).toPath());
                     } catch (IOException ex) {
@@ -85,10 +85,10 @@ public class MainPanel extends JPanel {
                     }
                 }
             }
-            fileTable.refresh();
+            fileList.refresh();
         });
         jPopupMenu.add(jMenuItem);
-        fileTable.addMouseListener(new MouseListener() {
+        fileList.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -96,8 +96,8 @@ public class MainPanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (!SwingUtilities.isRightMouseButton(e) || fileTable.getSelectedRow() == -1) return;
-                jPopupMenu.show(fileTable, e.getX(), e.getY());
+                if (!SwingUtilities.isRightMouseButton(e) || fileList.getTable().getSelectedRow() == -1) return;
+                jPopupMenu.show(fileList, e.getX(), e.getY());
             }
 
             @Override
@@ -115,7 +115,7 @@ public class MainPanel extends JPanel {
 
             }
         });
-        add(new JScrollPane(fileTable), BorderLayout.CENTER);
+        add(fileList, BorderLayout.CENTER);
     }
 
 

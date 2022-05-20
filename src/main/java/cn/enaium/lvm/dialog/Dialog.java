@@ -26,9 +26,9 @@ import static cn.enaium.lvm.MainGUI.ICON;
 public class Dialog extends JFrame {
     public Dialog(String title) {
         super(title);
-        setLocationRelativeTo(getOwner());
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(800, 500);
         setIconImage(ICON);
+        setLocationRelativeTo(getOwner());
     }
 }

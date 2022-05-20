@@ -21,13 +21,13 @@ import java.io.File;
 /**
  * @author Enaium
  */
-public class FileTableNode {
+public class FileInfo {
     private final String title;
     private final String tagline;
     private final String author;
     private final File file;
 
-    public FileTableNode(String name, String tagline, String author, File file) {
+    public FileInfo(String name, String tagline, String author, File file) {
         this.title = name;
         this.tagline = tagline;
         this.author = author;

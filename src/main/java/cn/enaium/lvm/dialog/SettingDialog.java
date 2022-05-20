@@ -51,7 +51,7 @@ public class SettingDialog extends Dialog {
             try {
                 Setting o = ((Setting) field.get(config));
                 if (o instanceof EnableSetting) {
-                    JCheckBox jCheckBox = new JCheckBox(o.getName());
+                    JCheckBox jCheckBox = new JCheckBox();
 
                     jCheckBox.setSelected(((EnableSetting) o).getValue());
 
@@ -59,21 +59,26 @@ public class SettingDialog extends Dialog {
                         o.setValue(jCheckBox.isSelected());
                     });
 
-                    jPanel.add(jCheckBox);
+                    jPanel.add(new JPanel() {
+                        {
+                            add(new JLabel(o.getName()));
+                            add(jCheckBox);
+                        }
+                    });
                 } else if (o instanceof ModeSetting) {
-                    JPanel modePanel = new JPanel(new GridLayout(1, 2));
                     JComboBox<String> jComboBox = new JComboBox<>();
                     ((ModeSetting) o).getMode().forEach(jComboBox::addItem);
                     jComboBox.setSelectedItem(((ModeSetting) o).getValue());
                     jComboBox.addActionListener(e -> {
                         o.setValue(jComboBox.getSelectedItem());
                     });
-                    modePanel.add(new JLabel(o.getName()));
-                    modePanel.add(jComboBox);
-                    jPanel.add(modePanel);
+                    jPanel.add(new JPanel() {
+                        {
+                            add(new JLabel(o.getName()));
+                            add(jComboBox);
+                        }
+                    });
                 } else if (o instanceof StringSetting) {
-                    JPanel stringPanel = new JPanel(new GridLayout(1, 2));
-                    stringPanel.add(new JLabel(o.getName()));
                     JTextField jTextField = new JTextField(((StringSetting) o).getValue());
                     jTextField.getDocument().addDocumentListener(new DocumentListener() {
                         @Override
@@ -92,8 +97,12 @@ public class SettingDialog extends Dialog {
                         }
                     });
 
-                    stringPanel.add(jTextField);
-                    jPanel.add(stringPanel);
+                    jPanel.add(new JPanel() {
+                        {
+                            add(new JLabel(o.getName()));
+                            add(jTextField);
+                        }
+                    });
                 }
             } catch (IllegalAccessException e) {
                 MessageUtil.error(e);

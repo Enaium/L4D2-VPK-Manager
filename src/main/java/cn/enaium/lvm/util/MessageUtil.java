@@ -42,6 +42,14 @@ public class MessageUtil {
         }
     }
 
+    public static void info(String message) {
+        JOptionPane.showMessageDialog(null, message, LangUtil.i18n("info"), JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void warning(String message) {
+        JOptionPane.showMessageDialog(null, message, LangUtil.i18n("warning"), JOptionPane.WARNING_MESSAGE);
+    }
+
     public interface Action {
         void action();
     }

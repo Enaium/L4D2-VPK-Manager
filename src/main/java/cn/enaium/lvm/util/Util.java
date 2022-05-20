@@ -16,7 +16,7 @@
 
 package cn.enaium.lvm.util;
 
-import cn.enaium.lvm.file.FileTableNode;
+import cn.enaium.lvm.file.FileInfo;
 import com.connorhaigh.javavpk.core.Archive;
 import com.connorhaigh.javavpk.core.Directory;
 import com.connorhaigh.javavpk.core.Entry;
@@ -86,8 +86,8 @@ public class Util {
     }
 
 
-    public static List<FileTableNode> getAll(File file) {
-        List<FileTableNode> fileTableNodes = new ArrayList<>();
+    public static List<FileInfo> getAll(File file) {
+        List<FileInfo> fileInfos = new ArrayList<>();
         for (File archiveFile : Objects.requireNonNull(file.listFiles())) {
             if (!archiveFile.getName().endsWith(".vpk")) {
                 continue;
@@ -107,11 +107,11 @@ public class Util {
                 MessageUtil.error(e);
             }
             if (s != null) {
-                fileTableNodes.add(new FileTableNode(Util.getValue(s, "addonTitle"), Util.getValue(s, "addonTagline"), Util.getValue(s, "addonAuthor"), archiveFile));
+                fileInfos.add(new FileInfo(Util.getValue(s, "addonTitle"), Util.getValue(s, "addonTagline"), Util.getValue(s, "addonAuthor"), archiveFile));
             } else {
-                fileTableNodes.add(new FileTableNode("NULL", "NULL", "NULL", archiveFile));
+                fileInfos.add(new FileInfo("NULL", "NULL", "NULL", archiveFile));
             }
         }
-        return fileTableNodes;
+        return fileInfos;
     }
 }

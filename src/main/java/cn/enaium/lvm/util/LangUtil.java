@@ -21,14 +21,10 @@ import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Locale;
 
 import static cn.enaium.lvm.LVM.CONFIG;
@@ -42,7 +38,7 @@ public class LangUtil {
         throw new IllegalAccessError("Utility");
     }
 
-    public static String i18n(String key) {
+    public static String i18n(String key, Object... args) {
         Locale locale = Locale.getDefault();
         String lang = locale.getLanguage() + "_" + locale.getCountry();
         if (!CONFIG.language.getValue().equals("System")) {
@@ -70,13 +66,13 @@ public class LangUtil {
             inputStream.close();
             JsonObject jsonObject = new Gson().fromJson(text, JsonObject.class);
             try {
-                return jsonObject.get(key).getAsString();
+                return String.format(jsonObject.get(key).getAsString(), args);
             } catch (NullPointerException e) {
                 MessageUtil.error(new NullPointerException(String.format("Lang not found \" %s \"", key)));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            MessageUtil.error(e);
         }
-        return null;
+        return lang;
     }
 }
