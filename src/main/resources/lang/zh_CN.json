@@ -1,7 +1,9 @@
 {
   "success": "成功",
   "warning": "警告",
+  "warning.workshop.copy": "%s个模组没有被复制",
   "fail": "失败",
+  "info": "信息",
   "table.fileName": "文件名",
   "wantCloseWindow": "想要关闭吗",
   "table.title": "标题",

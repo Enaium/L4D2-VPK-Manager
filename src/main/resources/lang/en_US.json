@@ -1,7 +1,9 @@
 {
   "success": "Success",
   "warning": "Warning",
+  "warning.workshop.copy": "%s mods is not copy",
   "fail": "Fail",
+  "info": "Info",
   "wantCloseWindow": "Do you want to close",
   "table.fileName": "File name",
   "table.title": "Title",
