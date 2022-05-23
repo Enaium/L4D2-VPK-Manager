@@ -51,22 +51,23 @@ public class FileList extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e) && table.getSelectedRow() != -1) {
+                if (table.getSelectedRow() != -1) {
                     for (int selectedRow : table.getSelectedRows()) {
                         Object valueAt = table.getValueAt(selectedRow, 0);
                         if (valueAt instanceof FileInfo) {
-                            comp.setRightComponent(new JScrollPane(new FileInfoPanel((FileInfo) valueAt)));
+                            comp.setRightComponent(new FileInfoPanel((FileInfo) valueAt));
                         }
                     }
                 }
             }
         });
 
-
         comp.setLeftComponent(new JScrollPane(table));
-        comp.setResizeWeight(0.8f);
-        comp.setDividerLocation(Integer.MAX_VALUE);
+        comp.setRightComponent(new JPanel());
+        comp.setResizeWeight(1);
         add(comp, BorderLayout.CENTER);
+
+
     }
 
     public JTable getTable() {

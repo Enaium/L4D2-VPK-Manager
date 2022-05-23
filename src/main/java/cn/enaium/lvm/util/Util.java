@@ -20,10 +20,16 @@ import cn.enaium.lvm.file.FileInfo;
 import com.connorhaigh.javavpk.core.Archive;
 import com.connorhaigh.javavpk.core.Directory;
 import com.connorhaigh.javavpk.core.Entry;
+import com.connorhaigh.javavpk.exceptions.ArchiveException;
+import com.connorhaigh.javavpk.exceptions.EntryException;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Enaium
@@ -113,5 +119,22 @@ public class Util {
             }
         }
         return fileInfos;
+    }
+
+    public static byte[] getVPK(File vpk, String file) {
+        try {
+            Archive archive = new Archive(vpk);
+            archive.load();
+            for (Directory directory : archive.getDirectories()) {
+                for (Entry entry : directory.getEntries()) {
+                    if (entry.getFullName().equals(file)) {
+                        return entry.readData();
+                    }
+                }
+            }
+        } catch (ArchiveException | EntryException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }
