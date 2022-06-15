@@ -32,12 +32,12 @@ public class MessageUtil {
         JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    public static void confirm(String message, String title, Action yes, Action no) {
+    public static void confirm(String message, String title, Runnable yes, Runnable no) {
         int i = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.OK_CANCEL_OPTION);
         if (i == JOptionPane.YES_OPTION) {
-            yes.action();
+            yes.run();
         } else {
-            no.action();
+            no.run();
         }
     }
 
@@ -47,9 +47,5 @@ public class MessageUtil {
 
     public static void warning(String message) {
         JOptionPane.showMessageDialog(null, message, LangUtil.i18n("warning"), JOptionPane.WARNING_MESSAGE);
-    }
-
-    public interface Action {
-        void action();
     }
 }
