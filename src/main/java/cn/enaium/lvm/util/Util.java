@@ -121,7 +121,7 @@ public class Util {
         return fileInfos;
     }
 
-    public static byte[] getVPK(File vpk, String file) {
+    public static byte[] getFile(File vpk, String file) {
         try {
             Archive archive = new Archive(vpk);
             archive.load();
