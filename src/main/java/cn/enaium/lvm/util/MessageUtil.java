@@ -30,7 +30,6 @@ public class MessageUtil {
     public static void error(Throwable e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-        System.exit(0);
     }
 
     public static void confirm(String message, String title, Action yes, Action no) {
