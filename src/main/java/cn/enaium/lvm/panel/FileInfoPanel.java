@@ -23,7 +23,7 @@ public class FileInfoPanel extends JPanel {
         File file = fileInfo.getFile();
         InputStream inputStream = null;
         try {
-            byte[] addonimage = Util.getVPK(file, "addonimage.jpg");
+            byte[] addonimage = Util.getFile(file, "addonimage.jpg");
             if (addonimage != null) {
                 inputStream = new ByteArrayInputStream(addonimage);
             }
@@ -42,7 +42,7 @@ public class FileInfoPanel extends JPanel {
         } catch (Exception ignored) {
 
         }
-        byte[] addoninfo = Util.getVPK(file, "addoninfo.txt");
+        byte[] addoninfo = Util.getFile(file, "addoninfo.txt");
         if (addoninfo != null) {
             add(new JScrollPane(new JTextArea(new String(addoninfo, StandardCharsets.UTF_8)) {
                 {

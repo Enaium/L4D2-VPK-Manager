@@ -16,15 +16,18 @@
 
 package cn.enaium.lvm.dialog;
 
-import cn.enaium.lvm.file.FileList;
 import cn.enaium.lvm.file.FileInfo;
+import cn.enaium.lvm.file.FileList;
 import cn.enaium.lvm.util.LangUtil;
 import cn.enaium.lvm.util.MessageUtil;
 import cn.enaium.lvm.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -41,15 +44,35 @@ public class ViewWorkshopFolderDialog extends Dialog {
         super(LangUtil.i18n("button.viewWorkshopFolder"));
         FileList fileList = new FileList(WORKSHOP_DIR);
 
+        JPopupMenu jPopupMenu = new JPopupMenu() {
+            {
+                add(new JMenuItem(LangUtil.i18n("menu.copyToAddons")) {
+                    {
+                        addActionListener(e -> {
+                            for (int selectedRow : fileList.getTable().getSelectedRows()) {
+                                Object valueAt = fileList.getTable().getValueAt(selectedRow, 0);
+                                if (valueAt instanceof FileInfo) {
+                                    FileInfo fileInfo = (FileInfo) valueAt;
+                                    try {
+                                        Files.copy(fileInfo.getFile().toPath(), new File(ADDONS_DIR, fileInfo.getTitle().replaceAll("[\\s\\\\/:*?\"<>|]", "-") + ".vpk").toPath(), StandardCopyOption.REPLACE_EXISTING);
+                                    } catch (IOException ex) {
+                                        MessageUtil.error(ex);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
 
-//        fileTable.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                if (!SwingUtilities.isRightMouseButton(e) || fileTable.getSelectedRow() == -1) return;
-//
-//            }
-//        });
-
+        fileList.getTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!SwingUtilities.isRightMouseButton(e) || fileList.getTable().getSelectedRow() == -1) return;
+                jPopupMenu.show(fileList, e.getX(), e.getY());
+            }
+        });
 
         JButton workshopVpkToAddonDir = new JButton(LangUtil.i18n("button.workshopCopyToAddons"));
         workshopVpkToAddonDir.addActionListener(action -> {

@@ -19,8 +19,8 @@ package cn.enaium.lvm.panel;
 import cn.enaium.lvm.FileDropTarget;
 import cn.enaium.lvm.dialog.ViewDisableFolderDialog;
 import cn.enaium.lvm.dialog.ViewWorkshopFolderDialog;
-import cn.enaium.lvm.file.FileList;
 import cn.enaium.lvm.file.FileInfo;
+import cn.enaium.lvm.file.FileList;
 import cn.enaium.lvm.util.LangUtil;
 import cn.enaium.lvm.util.MessageUtil;
 
@@ -28,8 +28,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -71,48 +71,33 @@ public class MainPanel extends JPanel {
         viewWorkshopFolder.addActionListener(e -> new ViewWorkshopFolderDialog().setVisible(true));
         topPanel.add(viewWorkshopFolder);
         add(topPanel, BorderLayout.NORTH);
-        JPopupMenu jPopupMenu = new JPopupMenu();
-        JMenuItem jMenuItem = new JMenuItem(LangUtil.i18n("menu.disable"));
-        jMenuItem.addActionListener(e -> {
-            for (int selectedRow : fileList.getTable().getSelectedRows()) {
-                Object valueAt = fileList.getTable().getValueAt(selectedRow, 0);
-                if (valueAt instanceof FileInfo) {
-                    File file = ((FileInfo) valueAt).getFile();
-                    try {
-                        Files.move(file.toPath(), new File(DISABLE_ADDONS_DIR, file.getName()).toPath());
-                    } catch (IOException ex) {
-                        MessageUtil.error(ex);
+        JPopupMenu jPopupMenu = new JPopupMenu() {
+            {
+                add(new JMenuItem(LangUtil.i18n("menu.disable")) {
+                    {
+                        addActionListener(e -> {
+                            for (int selectedRow : fileList.getTable().getSelectedRows()) {
+                                Object valueAt = fileList.getTable().getValueAt(selectedRow, 0);
+                                if (valueAt instanceof FileInfo) {
+                                    File file = ((FileInfo) valueAt).getFile();
+                                    try {
+                                        Files.move(file.toPath(), new File(DISABLE_ADDONS_DIR, file.getName()).toPath());
+                                    } catch (IOException ex) {
+                                        MessageUtil.error(ex);
+                                    }
+                                }
+                            }
+                            fileList.refresh();
+                        });
                     }
-                }
+                });
             }
-            fileList.refresh();
-        });
-        jPopupMenu.add(jMenuItem);
-        fileList.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
+        };
+        fileList.getTable().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (!SwingUtilities.isRightMouseButton(e) || fileList.getTable().getSelectedRow() == -1) return;
                 jPopupMenu.show(fileList, e.getX(), e.getY());
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
         add(fileList, BorderLayout.CENTER);

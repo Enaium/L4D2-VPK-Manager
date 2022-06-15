@@ -56,7 +56,7 @@ public class ViewDisableFolderDialog extends Dialog {
             fileList.refresh();
         });
         jPopupMenu.add(jMenuItem);
-        fileList.addMouseListener(new MouseAdapter() {
+        fileList.getTable().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (!SwingUtilities.isRightMouseButton(e) || fileList.getTable().getSelectedRow() == -1) return;
