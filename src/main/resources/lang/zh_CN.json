@@ -20,5 +20,6 @@
   "menu.help.setting": "设置",
   "menu.tool": "工具",
   "menu.tool.vpkExtract": "VPK提取",
-  "menu.tool.vpkExtract.drop": "将文件拖放到此处提取"
+  "menu.tool.vpkExtract.drop": "将文件拖放到此处提取",
+  "menu.copyToAddons": "复制到Addons"
 }

@@ -20,5 +20,6 @@
   "menu.help.setting": "Setting",
   "menu.tool": "Tool",
   "menu.tool.vpkExtract": "VPK extract",
-  "menu.tool.vpkExtract.drop": "Drop files here to extract"
+  "menu.tool.vpkExtract.drop": "Drop files here to extract",
+  "menu.copyToAddons": "Copy to Addons"
 }
